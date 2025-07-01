@@ -6,9 +6,7 @@ Um checkpoint de segurança inteligente para garantir a conformidade no uso de E
 
 ---
 
-###  डेमो ao Vivo
-
-**(Link a ser atualizado após o deploy no GitHub Pages)**
+### Demo ao Vivo
 
 **[>> Acesse a demonstração ao vivo aqui! <<](https://ErickFJSantos314.github.io/detector-epi-ws)**
 
@@ -18,8 +16,6 @@ Um checkpoint de segurança inteligente para garantir a conformidade no uso de E
 
 O Guardião de EPI Digital é um protótipo funcional que ataca o Desafio 2, propondo uma solução proativa para a segurança no trabalho. Em vez de uma verificação manual e reativa, a solução atua como um portão de acesso digital, analisando o vídeo da câmera em tempo real para validar se os colaboradores estão utilizando os EPIs corretos antes de entrarem em uma área de risco.
 
-![Demonstração do Guardião de EPI em Ação](URL_DO_SEU_GIF_AQUI)
-*(Dica: Grave um GIF da tela com o app funcionando usando um programa como o 'ScreenToGif' ou 'Giphy Capture' e suba para o seu repositório para colocar o link aqui)*
 
 ### ✨ Funcionalidades Principais
 
