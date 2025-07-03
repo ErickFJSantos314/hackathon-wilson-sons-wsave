@@ -4,12 +4,48 @@ import { InferenceSession, Tensor } from 'onnxruntime-web';
 import './App.css';
 
 const classNames = ['Abafador de ruido', 'Botas de seguranca', 'Capacete de seguranca', 'Luvas de protecao', 'Mascara', 'Oculos de protecao', 'Pessoa', 'Roupa de protecao'];
+const episToCheck = [ 'Capacete de seguranca', 'Oculos de protecao', 'Roupa de protecao'];
+
+// Função auxiliar para "lembrar" o valor anterior de uma variável
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
 
 function App() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [session, setSession] = useState(null);
+  const [personDetected, setPersonDetected] = useState(false);
+  const [detectedEPIs, setDetectedEPIs] = useState(new Set());
   const [loading, setLoading] = useState("Carregando modelo ONNX...");
+
+  // --- LÓGICA DE SOM ---
+  // 1. Carrega os sons. Garanta que eles estejam em 'public/sounds/'
+  const successSound = new Audio('sucesso.mp3');
+  const alertSound = new Audio('acessonegado.mp3');
+
+  const allEpisOk = episToCheck.every(epi => detectedEPIs.has(epi));
+  // 2. Guarda o status anterior para saber quando ocorre a MUDANÇA
+  const prevAllEpisOk = usePrevious(allEpisOk);
+  const prevPersonDetected = usePrevious(personDetected);
+
+  // 3. Efeito que roda SOMENTE quando o status de detecção muda
+  useEffect(() => {
+    // Se uma pessoa acabou de aparecer e os EPIs NÃO estão OK -> Toca alerta
+    if (personDetected && !prevPersonDetected && !allEpisOk) {
+      alertSound.play();
+    }
+    
+    // Se os EPIs ficaram OK AGORA mas não estavam antes -> Toca sucesso
+    if (allEpisOk && !prevAllEpisOk) {
+      successSound.play();
+    }
+  }, [personDetected, allEpisOk, prevPersonDetected, prevAllEpisOk, alertSound, successSound]);
+  // --- FIM DA LÓGICA DE SOM ---
 
   useEffect(() => {
     async function setup() {
@@ -25,7 +61,8 @@ function App() {
         if (video) {
           video.srcObject = stream;
           video.onloadedmetadata = () => {
-            setLoading("Câmera pronta. Pronto para detectar!");
+            setLoading("Câmera pronta. Aguardando pessoa...");
+            setInterval(() => runDetection(newSession), 200);
           };
         }
       } catch (e) {
@@ -36,40 +73,39 @@ function App() {
     setup();
   }, []);
 
-  useEffect(() => {
-    let intervalId;
-    if (session && loading === "Câmera pronta. Pronto para detectar!") {
-      intervalId = setInterval(() => {
-        runDetection(session);
-      }, 100); 
-    }
-    return () => clearInterval(intervalId);
-  }, [session, loading]);
-
   const preprocess = async (video) => {
+    const modelInputSize = 416;
     const canvas = document.createElement('canvas');
+    canvas.width = modelInputSize;
+    canvas.height = modelInputSize;
     const ctx = canvas.getContext('2d');
-    const inputSize = 416;
-    canvas.width = inputSize;
-    canvas.height = inputSize;
-    ctx.drawImage(video, 0, 0, inputSize, inputSize);
-    const imageData = ctx.getImageData(0, 0, inputSize, inputSize);
-    const { data } = imageData;
-    const float32Data = new Float32Array(3 * inputSize * inputSize);
-    for (let i = 0; i < inputSize * inputSize; i++) {
-        float32Data[i] = data[i * 4] / 255.0;
-        float32Data[i + inputSize * inputSize] = data[i * 4 + 1] / 255.0;
-        float32Data[i + 2 * inputSize * inputSize] = data[i * 4 + 2] / 255.0;
+    ctx.fillStyle = '#808080';
+    ctx.fillRect(0, 0, modelInputSize, modelInputSize);
+    const videoRatio = video.videoWidth / video.videoHeight;
+    let newWidth = modelInputSize;
+    let newHeight = newWidth / videoRatio;
+    if (newHeight > modelInputSize) {
+      newHeight = modelInputSize;
+      newWidth = newHeight * videoRatio;
     }
-    return new Tensor('float32', float32Data, [1, 3, inputSize, inputSize]);
+    const xOffset = (modelInputSize - newWidth) / 2;
+    const yOffset = (modelInputSize - newHeight) / 2;
+    ctx.drawImage(video, xOffset, yOffset, newWidth, newHeight);
+    const imageData = ctx.getImageData(0, 0, modelInputSize, modelInputSize);
+    const { data } = imageData;
+    const float32Data = new Float32Array(3 * modelInputSize * modelInputSize);
+    for (let i = 0; i < modelInputSize * modelInputSize; i++) {
+        float32Data[i] = data[i * 4] / 255.0;
+        float32Data[i + modelInputSize * modelInputSize] = data[i * 4 + 1] / 255.0;
+        float32Data[i + 2 * modelInputSize * modelInputSize] = data[i * 4 + 2] / 255.0;
+    }
+    return new Tensor('float32', float32Data, [1, 3, modelInputSize, modelInputSize]);
   };
   
-  // >>>>>>>>>>>>> A FÓRMULA MATEMÁTICA FINALMENTE CORRETA <<<<<<<<<<<<<<<
-  const drawBoundingBoxes = (results) => {
+  const processDetections = (results) => {
     const output = results.output0;
     const canvas = canvasRef.current;
     const video = videoRef.current;
-
     if (!canvas || !video || !output?.data) return;
 
     const videoWidth = video.videoWidth;
@@ -82,8 +118,15 @@ function App() {
     const confidenceThreshold = 0.50;
     const numDetections = output.dims[2];
     const numClasses = classNames.length;
-    const modelInputSize = 416.0; // O tamanho da imagem que o modelo espera
+    const modelInputSize = 416.0;
 
+    const scale = Math.min(videoWidth / modelInputSize, videoHeight / modelInputSize);
+    const xOffset = (videoWidth - modelInputSize * scale) / 2;
+    const yOffset = (videoHeight - modelInputSize * scale) / 2;
+    
+    let isPersonVisible = false;
+    const currentEpisInFrame = new Set();
+    
     for (let i = 0; i < numDetections; i++) {
       let maxProb = 0;
       let classId = -1;
@@ -98,63 +141,53 @@ function App() {
       
       if (maxProb > confidenceThreshold) {
         const label = classNames[classId];
-        
-        // As coordenadas vêm em pixels relativos ao input de 416x416
-        const x_center_raw = output.data[i];
-        const y_center_raw = output.data[i + numDetections];
-        const width_raw = output.data[i + 2 * numDetections];
-        const height_raw = output.data[i + 3 * numDetections];
 
-        // 1. Normalizamos as coordenadas (dividimos pelo tamanho do input do modelo)
-        const x_center_norm = x_center_raw / modelInputSize;
-        const y_center_norm = y_center_raw / modelInputSize;
-        const width_norm = width_raw / modelInputSize;
-        const height_norm = height_raw / modelInputSize;
-
-        // 2. Escalamos para o tamanho real do vídeo
-        const w = width_norm * videoWidth;
-        const h = height_norm * videoHeight;
-        const x = x_center_norm * videoWidth - (w / 2);
-        const y = y_center_norm * videoHeight - (h / 2);
-        
-        // Desenha
-        ctx.strokeStyle = '#00FF00'; // Verde Sucesso!
-        ctx.lineWidth = 4;
-        ctx.strokeRect(x, y, w, h);
-
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-        const font = '18px Arial';
-        ctx.font = font;
-        const text = `${label} (${(maxProb * 100).toFixed(1)}%)`;
-        ctx.fillRect(x, y - 22, ctx.measureText(text).width + 10, 22);
-        ctx.fillStyle = '#00FF00';
-        ctx.fillText(text, x + 5, y - 5);
+        if (label === "Pessoa") isPersonVisible = true;
+        if (episToCheck.includes(label)) currentEpisInFrame.add(label);
       }
     }
+    
+    setPersonDetected(isPersonVisible);
+    setDetectedEPIs(currentEpisInFrame);
   };
   
   const runDetection = async (session) => {
-    if (!session || !videoRef.current?.srcObject || !videoRef.current.videoWidth) return;
+    if (!session || !videoRef.current?.srcObject) return;
     try {
         const inputTensor = await preprocess(videoRef.current);
         const feeds = { 'images': inputTensor };
         const results = await session.run(feeds);
-        drawBoundingBoxes(results);
-    } catch (e) {
-      console.error("Erro durante a detecção: ", e);
-    }
+        processDetections(results);
+    } catch (e) { console.error("Erro durante a detecção: ", e); }
   };
+
+  let videoContainerClass = "video-container";
+  if (personDetected) {
+    videoContainerClass += allEpisOk ? ' status-ok' : ' status-error';
+  }
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Detector de EPI - Wilson Sons</h1>
-        <div className="video-container">
-          <video ref={videoRef} autoPlay playsInline muted />
-          <canvas ref={canvasRef} />
-        </div>
-        <h2>{loading}</h2>
-      </header>
+      <div className={videoContainerClass}>
+        <video ref={videoRef} autoPlay playsInline muted />
+        <canvas ref={canvasRef} />
+      </div>
+      <div className="header-panel">
+        <h1>GUARDIÃO EPI - WS</h1>
+      </div>
+      <div className="status-panel">
+        <h2>{personDetected ? (allEpisOk ? 'STATUS: ACESSO LIBERADO' : 'STATUS: EPI FALTANTE') : 'Aguardando Validação...'}</h2>
+      </div>
+      <div className={personDetected ? 'checklist-panel visible' : 'checklist-panel'}>
+        <h3>CHECKLIST DE EPIs</h3>
+        <ul>
+            {episToCheck.map(epi => (
+                <li key={epi} className={detectedEPIs.has(epi) ? 'detected' : ''}>
+                    {detectedEPIs.has(epi) ? '✅' : '❌'} {epi}
+                </li>
+            ))}
+        </ul>
+      </div>
     </div>
   );
 }
