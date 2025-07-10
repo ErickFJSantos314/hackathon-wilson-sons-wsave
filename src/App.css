@@ -1,53 +1,65 @@
 /* Reset básico e cor de fundo principal */
-body, html, #root, .App {
-  margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+body, html, #root, .Aplicativo {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   background-color: #001C43;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
 }
 
-.App {
-  position: relative; width: 100vw; height: 100vh;
+.Aplicativo {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
   color: white;
 }
 
 /* --- TELA DE DESCANSO --- */
-.sleep-screen {
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
+.telaDescanso {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #1A2E5E;
-  opacity: 1; visibility: visible;
+  opacity: 1;
+  visibility: visible;
   transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
   position: absolute;
   z-index: 20;
 }
-.sleep-screen.hidden {
+.telaDescanso.oculto {
   opacity: 0;
   visibility: hidden;
 }
-.sleep-screen img {
-  max-width: 50%; max-height: 50%;
-  animation: pulse 2s infinite ease-in-out;
+.telaDescanso img {
+  max-width: 50%;
+  max-height: 50%;
+  animation: pulsar 2s infinite ease-in-out;
 }
-@keyframes pulse {
+@keyframes pulsar {
   0% { transform: scale(1); }
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
 
 /* --- INTERFACE PRINCIPAL --- */
-.main-interface {
-  width: 100%; height: 100%;
+.interfacePrincipal {
+  width: 100%;
+  height: 100%;
   position: relative;
 }
 
-.camera-container {
+.containerCamera {
   position: relative;
   width: 100%;
   max-width: 100vw;
-  height: auto; /* deixa a altura ajustar pela proporção */
-  aspect-ratio: 16 / 9; /* ou use a proporção real do seu vídeo */
+  height: auto;
+  aspect-ratio: 16 / 9;
   background-color: #001c43;
   overflow: hidden;
 }
@@ -58,57 +70,81 @@ video, canvas {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* preserva proporção sem distorcer */
+  object-fit: contain;
   transform: scaleX(-1);
 }
 
-
-/* Painéis de Overlay */
-.header-panel, .status-panel, .checklist-panel {
-  position: absolute; 
+/* Painéis de Sobreposição */
+.painelCabecalho, .painelStatus, .painelLista {
+  position: absolute;
   background-color: rgba(0, 28, 67, 0.7);
   backdrop-filter: blur(5px);
   padding: 15px 25px;
   z-index: 10;
   text-align: center;
 }
-.header-panel {
-  top: 0; left: 50%; transform: translateX(-50%);
-  border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;
+.painelCabecalho {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
-.header-panel h1 {
-  margin: 0; font-size: 1.5rem; color: #fff;
+.painelCabecalho h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #fff;
 }
-.status-panel {
-  bottom: 0; left: 50%; transform: translateX(-50%);
-  border-top-left-radius: 12px; border-top-right-radius: 12px;
+.painelStatus {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
-.status-panel h2 {
-  margin: 0; font-size: 1.2rem;
+.painelStatus h2 {
+  margin: 0;
+  font-size: 1.2rem;
 }
 
-.checklist-panel {
-  top: 50%; right: 0; transform: translateY(-50%);
-  width: 320px;
-  border-top-left-radius: 12px; border-bottom-left-radius: 12px;
+.painelLista {
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  min-width: 290px;
+  max-width: 400px;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
   text-align: left;
-  opacity: 0; visibility: hidden;
+  opacity: 0;
+  visibility: hidden;
   transition: all 0.5s ease-in-out;
 }
-.checklist-panel.visible {
-  opacity: 1; visibility: visible;
+.painelLista.visivel {
+  opacity: 1;
+  visibility: visible;
 }
-.checklist-panel h3 { margin-top: 0; color: #61dafb; }
-.checklist-panel ul { list-style: none; padding: 0; margin: 0; }
-.checklist-panel li {
-  font-size: 1.2rem; padding: 12px; margin-bottom: 10px; border-radius: 8px;
+.painelLista h3 {
+  margin-top: 0;
+  color: #61dafb;
+}
+.painelLista ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.painelLista li {
+  font-size: 1.2rem;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
   background-color: rgba(220, 53, 69, 0.4);
   transition: background-color 0.4s ease;
 }
-.checklist-panel li.detected {
+.painelLista li.detectado {
   background-color: rgba(40, 167, 69, 0.5);
 }
-.camera-container canvas {
+.containerCamera canvas {
   position: absolute;
   top: 0;
   left: 0;
@@ -117,11 +153,11 @@ video, canvas {
   height: 100%;
   pointer-events: none;
 }
-.toggle-button {
+.botaoAlternancia {
   user-select: none;
 }
 
-.switch {
+.interruptor {
   width: 50px;
   height: 26px;
   border-radius: 13px;
@@ -130,11 +166,11 @@ video, canvas {
   transition: background-color 0.3s ease;
 }
 
-.switch.on {
+.interruptor.ligado {
   background-color: #00A7E0;
 }
 
-.toggle-circle {
+.circuloAlternancia {
   width: 22px;
   height: 22px;
   background: white;
@@ -145,7 +181,6 @@ video, canvas {
   transition: left 0.3s ease;
 }
 
-.switch.on .toggle-circle {
+.interruptor.ligado .circuloAlternancia {
   left: 26px;
 }
-
