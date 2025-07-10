@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/detector-epi-ws/static/css/main.fed15e47.css",
-    "main.js": "/detector-epi-ws/static/js/main.d1eb417d.js",
+    "main.css": "/detector-epi-ws/static/css/main.1c346b43.css",
+    "main.js": "/detector-epi-ws/static/js/main.6683dc60.js",
     "static/js/453.07300b23.chunk.js": "/detector-epi-ws/static/js/453.07300b23.chunk.js",
     "static/media/ort-wasm-simd-threaded.jsep.wasm": "/detector-epi-ws/static/media/ort-wasm-simd-threaded.jsep.97d8ed7170daf34c90d5.wasm",
     "static/media/ort.bundle.min.mjs": "/detector-epi-ws/static/media/ort.bundle.min.6fc43338a4869696e31a.mjs",
     "index.html": "/detector-epi-ws/index.html",
-    "main.fed15e47.css.map": "/detector-epi-ws/static/css/main.fed15e47.css.map",
-    "main.d1eb417d.js.map": "/detector-epi-ws/static/js/main.d1eb417d.js.map",
+    "main.1c346b43.css.map": "/detector-epi-ws/static/css/main.1c346b43.css.map",
+    "main.6683dc60.js.map": "/detector-epi-ws/static/js/main.6683dc60.js.map",
     "453.07300b23.chunk.js.map": "/detector-epi-ws/static/js/453.07300b23.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fed15e47.css",
-    "static/js/main.d1eb417d.js"
+    "static/css/main.1c346b43.css",
+    "static/js/main.6683dc60.js"
   ]
 }
