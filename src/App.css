@@ -1,167 +1,151 @@
-/* Reset básico para garantir que a tela inteira seja usada */
+/* Reset básico e cor de fundo principal */
 body, html, #root, .App {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden; /* Evita barras de rolagem */
+  margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
   background-color: #001C43;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
 }
 
-/* O container principal da aplicação se torna o ponto de referência para os overlays */
 .App {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
+  position: relative; width: 100vw; height: 100vh;
   color: white;
 }
 
-/* Camada de Fundo: Câmera ocupando tudo */
+/* --- TELA DE DESCANSO --- */
+.sleep-screen {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background-color: #1A2E5E;
+  opacity: 1; visibility: visible;
+  transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+  position: absolute;
+  z-index: 20;
+}
+.sleep-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+.sleep-screen img {
+  max-width: 50%; max-height: 50%;
+  animation: pulse 2s infinite ease-in-out;
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* --- INTERFACE PRINCIPAL --- */
+.main-interface {
+  width: 100%; height: 100%;
+  position: relative;
+}
+
 .camera-container {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  height: auto; /* deixa a altura ajustar pela proporção */
+  aspect-ratio: 16 / 9; /* ou use a proporção real do seu vídeo */
+  background-color: #001c43;
+  overflow: hidden;
+}
+
+video, canvas {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  object-fit: contain; /* preserva proporção sem distorcer */
+  transform: scaleX(-1);
 }
 
-video, canvas {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
 
-/* Estilo base para todos os painéis sobrepostos */
+/* Painéis de Overlay */
 .header-panel, .status-panel, .checklist-panel {
   position: absolute; 
-  background-color: rgba(0, 28, 67, 0.4);
+  background-color: rgba(0, 28, 67, 0.7);
   backdrop-filter: blur(5px);
   padding: 15px 25px;
-  z-index: 10; /* Garante que fiquem acima da câmera */
+  z-index: 10;
+  text-align: center;
 }
-
-/* Painel do Título (Topo) */
 .header-panel {
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
+  top: 0; left: 50%; transform: translateX(-50%);
+  border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;
 }
 .header-panel h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #61dafb;
+  margin: 0; font-size: 1.5rem; color: #fff;
 }
-
-/* Painel de Status (Base) */
 .status-panel {
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  border-top-left-radius: 12px; border-top-right-radius: 12px;
 }
 .status-panel h2 {
-  margin: 0;
-  font-size: 1.2rem;
+  margin: 0; font-size: 1.2rem;
 }
 
-/* Painel da Lista (Direita) */
 .checklist-panel {
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
+  top: 50%; right: 0; transform: translateY(-50%);
   width: 320px;
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
+  border-top-left-radius: 12px; border-bottom-left-radius: 12px;
   text-align: left;
-  /* Lógica de aparecer/desaparecer */
-  opacity: 0;
-  visibility: hidden;
+  opacity: 0; visibility: hidden;
   transition: all 0.5s ease-in-out;
 }
-
 .checklist-panel.visible {
-  opacity: 1;
-  visibility: visible;
+  opacity: 1; visibility: visible;
 }
-
-.checklist-panel h3 {
-  margin-top: 0;
-  color: #61dafb;
-}
-
-.checklist-panel ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
+.checklist-panel h3 { margin-top: 0; color: #61dafb; }
+.checklist-panel ul { list-style: none; padding: 0; margin: 0; }
 .checklist-panel li {
-  font-size: 1.2rem;
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  background-color: rgba(220, 53, 69, 0.4); /* Vermelho translúcido (padrão) */
+  font-size: 1.2rem; padding: 12px; margin-bottom: 10px; border-radius: 8px;
+  background-color: rgba(220, 53, 69, 0.4);
   transition: background-color 0.4s ease;
 }
-
 .checklist-panel li.detected {
-  background-color: rgba(40, 167, 69, 0.5); /* Verde translúcido (detectado) */
+  background-color: rgba(40, 167, 69, 0.5);
+}
+.camera-container canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.toggle-button {
+  user-select: none;
 }
 
-/* Media Query para telas verticais (ex.: tablets ou smartphones em modo retrato) */
-@media (max-aspect-ratio: 1/1) {
-  .camera-container {
-    height: 70%; /* Câmera ocupa a maior parte da altura */
-    width: 100%;
-    top: 10%; /* Espaço para o título */
-  }
-
-  video, canvas {
-    height: 100%;
-    width: 100%;
-    object-fit: cover; /* Ajusta a câmera para preencher verticalmente */
-  }
-
-  .header-panel {
-    top: 0;
-    left: 0;
-    transform: none; /* Remove a centralização horizontal */
-    width: 100%;
-    border-bottom-right-radius: 12px;
-    text-align: center;
-  }
-
-  .status-panel {
-    bottom: 0;
-    left: 0;
-    transform: none; /* Remove a centralização horizontal */
-    width: 100%;
-    border-top-right-radius: 12px;
-    text-align: center;
-  }
-
-  .checklist-panel {
-    top: auto;
-    right: 0;
-    bottom: 10%; /* Alinha abaixo da câmera */
-    transform: none; /* Remove a tradução vertical */
-    width: 100%; /* Ocupa toda a largura em modo vertical */
-    max-width: 320px; /* Limita a largura máxima */
-    height: 20%; /* Altura ajustada */
-    overflow-y: auto; /* Rolagem se necessário */
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    border-bottom-left-radius: 0;
-  }
-
-  .checklist-panel.visible {
-    opacity: 1;
-    visibility: visible;
-  }
+.switch {
+  width: 50px;
+  height: 26px;
+  border-radius: 13px;
+  background-color: #ccc;
+  position: relative;
+  transition: background-color 0.3s ease;
 }
+
+.switch.on {
+  background-color: #00A7E0;
+}
+
+.toggle-circle {
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: left 0.3s ease;
+}
+
+.switch.on .toggle-circle {
+  left: 26px;
+}
+
