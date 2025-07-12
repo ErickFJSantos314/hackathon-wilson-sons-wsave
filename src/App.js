@@ -12,7 +12,12 @@ const nomesClasses = [
   'Pessoa',
   'Roupa de protecao',
 ];
-const episParaVerificar = ['Capacete de seguranca', 'Luvas de protecao', 'Roupa de protecao'];
+
+const episParaVerificar = [
+  'Capacete de seguranca',
+  'Oculos de protecao',
+  'Roupa de protecao'
+  ];
 
 function useValorAnterior(valor) {
   const referencia = useRef();
@@ -236,6 +241,9 @@ function Aplicativo() {
             muted
             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'contain', zIndex: 1 }}
           />
+          <div className="painelStatus">
+            <h2>{statusFinal}</h2>
+          </div>
           <canvas
             ref={referenciaTela}
             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 2 }}
@@ -254,8 +262,7 @@ function Aplicativo() {
               definirExibirCaixas(!exibirCaixas);
             }
           }}
-          style={{ position: 'absolute', top: 15, right: 15, zIndex: 30, userSelect: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10, color: 'white', fontWeight: 'bold' }}
-        >
+          style={{ position: 'absolute', top: 15, right: 15, zIndex: 10, userSelect: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10, color: 'white', fontWeight: 'bold' }}>
           <div className={`interruptor ${exibirCaixas ? 'ligado' : 'desligado'}`}>
             <div className="circuloAlternancia" />
           </div>
@@ -265,9 +272,6 @@ function Aplicativo() {
         <div className="painelCabecalho">
           <h1>WSAVE</h1>
           <h3>Sistema de Análise e Verificação de EPIs</h3>
-        </div>
-        <div className="painelStatus">
-          <h2>{statusFinal}</h2>
         </div>
         <div className={pessoaDetectada ? 'painelLista visivel' : 'painelLista'}>
           <h3>CHECKLIST DE EPIs</h3>

@@ -18,7 +18,7 @@ body, html, #root, .Aplicativo {
   color: white;
 }
 
-/* --- TELA DE DESCANSO --- */
+/*TELA DE DESCANSO*/
 .telaDescanso {
   width: 100%;
   height: 100%;
@@ -47,7 +47,7 @@ body, html, #root, .Aplicativo {
   100% { transform: scale(1); }
 }
 
-/* --- INTERFACE PRINCIPAL --- */
+/*INTERFACE PRINCIPAL*/
 .interfacePrincipal {
   width: 100%;
   height: 100%;
