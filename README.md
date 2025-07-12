@@ -1,157 +1,112 @@
-<<<<<<< HEAD
-# 🛡️ Guardião de EPI Digital
+# WSave - Sistema de Análise e Verificação de EPIs em Tempo Real
 
-### Solução desenvolvida para o Hackathon 2025 da Wilson Sons
+## 1. Resumo do Projeto
 
-Um checkpoint de segurança inteligente para garantir a conformidade no uso de Equipamentos de Proteção Individual (EPIs) em tempo real, utilizando Inteligência Artificial diretamente no navegador.
+O **WSave** é uma solução de visão computacional desenvolvida para o Hackathon 2025 da Wilson Sons. O projeto atende ao **Desafio 2: Visão Computacional para EPIs**, propondo um sistema inteligente e automatizado para a fiscalização do uso de Equipamentos de Proteção Individual.
+
+O objetivo é aumentar a segurança e a conformidade nas áreas operacionais através de um checkpoint digital que analisa o vídeo de uma câmera em tempo real para validar se os colaboradores estão utilizando os EPIs corretos antes de acessar uma zona de risco. A solução foi projetada para ser embarcada em um totem físico, atuando como um "Guardião de EPI Digital" proativo, com grande **potencial de impacto e aplicabilidade prática** (item 4.7 do regulamento).
+
+O nome WSave une a identidade da Wilson Sons (WS) ao seu principal propósito: "Save" (salvar), que também é acrônimo para "Sistema de Análise e Verificação de EPIs". A solução foi projetada não apenas para salvar recursos e otimizar processos, mas, acima de tudo, para salvar vidas, garantindo a segurança e a integridade dos nossos colaboradores de forma proativa e inteligente.
+
+### Demonstração Ao Vivo
+
+**[>> Acesse o WSave em Ação! <<](https://erickfjsantos314.github.io/hackathon-wilson-sons-wsave/)**
 
 ---
 
-### Demo ao Vivo
+## 2. Funcionalidades do Protótipo
 
-**[>> Acesse a demonstração ao vivo aqui! <<](https://ErickFJSantos314.github.io/detector-epi-ws)**
+A aplicação atual é um protótipo funcional de alta fidelidade que simula a experiência do totem e inclui:
+
+* **Detecção em Tempo Real:** A análise é feita diretamente no navegador (`client-side`), garantindo respostas instantâneas sem a necessidade de um servidor para a inferência.
+* **Interface de Verificação Dinâmica:** Ao detectar uma pessoa, uma interface lateral (checklist) é exibida, listando os EPIs necessários para aquela área.
+* **Checklist de Segurança Customizável:** A solução foi projetada com flexibilidade. A lista de EPIs a serem verificados é definida na constante `episToCheck` do código. Isso permite que a mesma solução seja implantada em diferentes áreas com requisitos de segurança distintos (ex: oficina vs. pátio), demonstrando o **potencial de escalabilidade e expansão** do projeto (item 4.5).
+* **Feedback Visual e Sonoro:** O checklist marca com `✅`/`❌` os EPIs e altera a cor de fundo para indicar conformidade, e um som de sucesso é emitido quando todos os itens são validados.
+* **Toggle de Visualização:** Um botão permite ao operador mostrar ou esconder as caixas de detecção (bounding boxes), alternando entre um modo técnico/depuração e uma interface limpa.
 
 ---
 
-### Visão Geral do Projeto
+## 3. Arquitetura e Tecnologias Utilizadas
 
-O Guardião de EPI Digital é um protótipo funcional que ataca o Desafio 2, propondo uma solução proativa para a segurança no trabalho. Em vez de uma verificação manual e reativa, a solução atua como um portão de acesso digital, analisando o vídeo da câmera em tempo real para validar se os colaboradores estão utilizando os EPIs corretos antes de entrarem em uma área de risco.
+A solução foi construída em duas fases principais, seguindo os padrões e tecnologias especificados pelo hackathon.
 
+#### **Fase 1: Treinamento do Modelo de IA**
 
-### ✨ Funcionalidades Principais
+O processo de criação do modelo foi conduzido na nuvem, comprovado por um documento que se encontra na pasta /docs do repositório. O que constitui a **demonstração do treinamento e adaptação do modelo** (item 4.5 do regulamento).
 
-* **Detecção em Tempo Real:** Análise de vídeo diretamente do navegador, sem necessidade de enviar imagens para um servidor.
-* **Modelo de IA Otimizado:** Utiliza um modelo YOLOv8 treinado para identificar múltiplas classes de EPIs e pessoas.
-* **Execução Client-Side:** Todo o processamento da IA acontece no computador do usuário através do ONNX Runtime Web, garantindo privacidade, baixo custo e alta velocidade de resposta.
-* **Interface Reativa:** Construída com React para um feedback visual instantâneo, com caixas de detecção e scores de confiança.
+* **Cloud Provider:** Amazon Web Services (em conformidade com o item 4.3).
+* **Serviços AWS:**
+    * **AWS S3:** Para armazenamento e versionamento do dataset.
+    * **AWS SageMaker:** Para o provisionamento do ambiente e execução do treinamento (em conformidade com o item 4.2 sobre uso de soluções AWS/GCP).
+* **Arquitetura do Modelo:** O modelo de IA é um **YOLOv8**, treinado para reconhecer **8 classes distintas**: a classe "Pessoa" e 7 tipos de EPIs.
+* **Artefato Final:** O modelo treinado foi otimizado e exportado para o formato **ONNX** para máxima performance e compatibilidade na web.
 
-### 🛠️ Tecnologias Utilizadas
+#### **Fase 2: Aplicação Client-Side (Interface do Totem)**
 
-* **Front-end (Aplicação de Análise):**
-    * **React.js:** Para a construção da interface de usuário.
-    * **ONNX Runtime Web:** Para executar o modelo de IA diretamente no navegador.
-    * **JavaScript (ES6+) & CSS3:** Para toda a lógica e estilização.
+O protótipo que executa a análise em tempo real foi desenvolvido com as seguintes tecnologias:
 
-* **Inteligência Artificial (Treinamento do Modelo):**
-    * **Python:** Linguagem principal para o treinamento.
-    * **PyTorch:** Framework de deep learning.
-    * **YOLOv8 (Ultralytics):** Arquitetura de detecção de objetos.
+* **Framework Principal:** **React.js** (em conformidade com o item 4.1 do regulamento, que especifica o framework corporativo).
+* **Motor de Inferência:** ONNX Runtime Web.
+* **Linguagem:** JavaScript (ES6+) e CSS3, com foco em uma interface responsiva que se adapta a diferentes formatos de tela (item 4.1).
 
-* **Cloud (Ambiente de Treinamento):**
-    * **AWS SageMaker:** Para o provisionamento do ambiente e execução do treinamento.
-    * **AWS S3:** Para armazenamento do dataset.
+---
 
-### 🚀 Como Executar o Projeto Localmente
+## 4. Como Executar o Projeto Localmente
 
 **Pré-requisitos:**
-* **Node.js e npm:** [Instale aqui](https://nodejs.org/)
-* **Git:** [Instale aqui](https://git-scm.com/)
+* Node.js e npm (v16 ou superior)
+* Git
 
 **Passos para Instalação:**
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/ErickFJSantos314/detector-epi-ws.git](https://github.com/ErickFJSantos314/detector-epi-ws.git)
+    git clone [https://github.com/ErickFJSantos314/hackathon-wilson-sons-wsave.git](https://github.com/ErickFJSantos314/hackathon-wilson-sons-wsave.git)
     ```
 
 2.  **Navegue até a pasta do projeto:**
     ```bash
-    cd detector-de-epi-ws
+    cd hackathon-wilson-sons-wsave
     ```
 
-3.  **Instale as dependências:**
+3.  **Instale as dependências do projeto:**
     ```bash
     npm install
     ```
 
-4.  **Inicie a aplicação:**
+4.  **Inicie a aplicação em modo de desenvolvimento:**
     ```bash
     npm start
     ```
 
 5.  Abra seu navegador e acesse `http://localhost:3000`.
 
-### 🗺️ Próximos Passos (Roadmap)
+---
 
-Este protótipo é a base para uma solução de produto completa. Os próximos passos na evolução do Guardião de EPI seriam:
+## 5. Próximos Passos (Roadmap)
 
-* **Produto Físico (Totem):** Embarcar a solução em um hardware dedicado (mini-PC + câmera + tela) para instalação em pontos de acesso físicos.
-* **Otimização de Performance:** Migrar a aplicação para uma solução nativa em Python com OpenCV para otimizar o uso de recursos no dispositivo embarcado.
-* **Integração de Hardware:** Conectar o sistema a catracas, portas automáticas ou sinalizadores (luzes verde/vermelha) para controle de acesso físico.
-* **Back-end e Dashboard:** Desenvolver uma API (ex: em Flask) para coletar dados de não conformidade e exibi-los em um dashboard para gestores de segurança.
+Este protótipo serve como uma base sólida para um produto final. O plano de implementação futuro está alinhado com a necessidade de **aplicabilidade prática e viabilidade de integração** com os sistemas da WS (itens 4.7 e 4.9 do regulamento).
 
-### 👨‍💻 Autor
+* **Hardware:** Embarcar a aplicação em um hardware dedicado (mini-PC + câmera + tela) para criar o totem físico.
+* **Otimização:** Migrar a aplicação para uma solução nativa em Python com OpenCV para maximizar a performance no hardware do totem.
+* **Integração:** Conectar o sistema a dispositivos físicos, como catracas e sinalizadores luminosos, e a sistemas internos da WS (item 4.5).
+* **Back-end e Dados:** Desenvolver uma API para centralizar o gerenciamento dos totens, permitindo a customização remota dos checklists e a coleta de dados para relatórios de conformidade.
 
-* **Erick Santos** - [GitHub](https://github.com/ErickFJSantos314)
-=======
-# Getting Started with Create React App
+## 6. Documentos
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Os documentos solicitados no regulamento podem ser encontrados na pasta /docs do repositório.
 
-## Available Scripts
+* **Evidências de treinamento do modelo - WSave**
+* **Fluxograma de Operação em Tempo Real - WSave**
+* **Plano de escalabilidade e expansão - WSave**
+* **Diagrama de modelo de uso - WSave**
+* **Arquitetura de treinamento e otimização do modelo - WSave**
+* **Documento de Precificação – WSave**
+* **Pich - Wsave**
 
-In the project directory, you can run:
+---
 
-### `npm start`
+### 👨‍💻Equipe
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
->>>>>>> master
+* **Erick Santos** - [GitHub](https://github.com/ErickFJSantos314) [Linkedln](www.linkedin.com/in/erick-francisco-de-jesus-santos-28a756274)
+* **Gillian Silva** - [Linkedln](https://www.linkedin.com/in/gillian-silva-contabeis/)
