@@ -104,7 +104,7 @@ Os documentos solicitados no regulamento podem ser encontrados na pasta /docs do
 * **Plano de escalabilidade e expansão - WSave**
 * **Diagrama de modelo de uso - WSave**
 * **Arquitetura de treinamento e otimização do modelo - WSave**
-* **Documento de Precificação – WSave**
+* **Documentação de precificação (Análise de Custo e Viabilidade) – WSave**
 * **Pich - Wsave**
 
 ---
