@@ -1,4 +1,7 @@
 # WSave - Sistema de Análise e Verificação de EPIs em Tempo Real
+<p align="center">
+  <img src="docs/wsavelogo.png" alt="Logo WSave" width="200">
+</p>
 
 ## 1. Resumo do Projeto
 
