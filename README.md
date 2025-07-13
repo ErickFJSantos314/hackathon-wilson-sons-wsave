@@ -23,7 +23,7 @@ A aplicação atual é um protótipo funcional de alta fidelidade que simula a e
 
 * **Detecção em Tempo Real:** A análise é feita diretamente no navegador (`client-side`), garantindo respostas instantâneas sem a necessidade de um servidor para a inferência.
 * **Interface de Verificação Dinâmica:** Ao detectar uma pessoa, uma interface lateral (checklist) é exibida, listando os EPIs necessários para aquela área.
-* **Checklist de Segurança Customizável:** A solução foi projetada com flexibilidade. A lista de EPIs a serem verificados é definida na constante `episToCheck` do código. Isso permite que a mesma solução seja implantada em diferentes áreas com requisitos de segurança distintos (ex: oficina vs. pátio), demonstrando o **potencial de escalabilidade e expansão** do projeto (item 4.5).
+* **Checklist de Segurança Customizável:** A solução foi projetada com flexibilidade. A lista de EPIs a serem verificados é definida na constante `episParaVerificar` do código. Isso permite que a mesma solução seja implantada em diferentes áreas com requisitos de segurança distintos (ex: oficina vs. pátio), demonstrando o **potencial de escalabilidade e expansão** do projeto (item 4.5).
 * **Feedback Visual e Sonoro:** O checklist marca com `✅`/`❌` os EPIs e altera a cor de fundo para indicar conformidade, e um som de sucesso é emitido quando todos os itens são validados.
 * **Toggle de Visualização:** Um botão permite ao operador mostrar ou esconder as caixas de detecção (bounding boxes), alternando entre um modo técnico/depuração e uma interface limpa.
 
