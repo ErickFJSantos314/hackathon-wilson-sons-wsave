@@ -111,5 +111,5 @@ Os documentos solicitados no regulamento podem ser encontrados na pasta /docs do
 
 ### 👨‍💻Equipe
 
-* **Erick Santos** - [GitHub](https://github.com/ErickFJSantos314) [Linkedln](www.linkedin.com/in/erick-francisco-de-jesus-santos-28a756274)
+* **Erick Santos** - [GitHub](https://github.com/ErickFJSantos314) | [Linkedln](www.linkedin.com/in/erick-francisco-de-jesus-santos-28a756274)
 * **Gillian Silva** - [Linkedln](https://www.linkedin.com/in/gillian-silva-contabeis/)
