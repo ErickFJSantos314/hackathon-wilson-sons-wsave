@@ -105,7 +105,9 @@ Os documentos solicitados no regulamento podem ser encontrados na pasta /docs do
 * **Diagrama de modelo de uso - WSave**
 * **Arquitetura de treinamento e otimização do modelo - WSave**
 * **Documentação de precificação (Análise de Custo e Viabilidade) – WSave**
-* **Pich - Wsave**
+* **Vídeo de demonstração de uso - WSave**
+  
+Acesse a apresentação de slides com vídeo de demonstração de uso aqui: [slide](https://docs.google.com/presentation/d/1MOlJDwyZFMQulqDjRentlFRUAbMNu2fQOzq4VSyDsTs/edit?usp=sharing)
 
 ---
 
