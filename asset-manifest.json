@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/hackathon-wilson-sons-wsave/static/css/main.36ea7269.css",
-    "main.js": "/hackathon-wilson-sons-wsave/static/js/main.ce907b17.js",
-    "static/js/453.437f184f.chunk.js": "/hackathon-wilson-sons-wsave/static/js/453.437f184f.chunk.js",
+    "main.js": "/hackathon-wilson-sons-wsave/static/js/main.46064d15.js",
+    "static/js/453.8cc8d2c3.chunk.js": "/hackathon-wilson-sons-wsave/static/js/453.8cc8d2c3.chunk.js",
     "static/media/ort-wasm-simd-threaded.jsep.wasm": "/hackathon-wilson-sons-wsave/static/media/ort-wasm-simd-threaded.jsep.97d8ed7170daf34c90d5.wasm",
-    "static/media/ort.bundle.min.mjs": "/hackathon-wilson-sons-wsave/static/media/ort.bundle.min.6720d6c8166053f19b09.mjs",
+    "static/media/ort.bundle.min.mjs": "/hackathon-wilson-sons-wsave/static/media/ort.bundle.min.c39635c92b0aa5e2eff3.mjs",
     "index.html": "/hackathon-wilson-sons-wsave/index.html",
     "main.36ea7269.css.map": "/hackathon-wilson-sons-wsave/static/css/main.36ea7269.css.map",
-    "main.ce907b17.js.map": "/hackathon-wilson-sons-wsave/static/js/main.ce907b17.js.map",
-    "453.437f184f.chunk.js.map": "/hackathon-wilson-sons-wsave/static/js/453.437f184f.chunk.js.map"
+    "main.46064d15.js.map": "/hackathon-wilson-sons-wsave/static/js/main.46064d15.js.map",
+    "453.8cc8d2c3.chunk.js.map": "/hackathon-wilson-sons-wsave/static/js/453.8cc8d2c3.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.36ea7269.css",
-    "static/js/main.ce907b17.js"
+    "static/js/main.46064d15.js"
   ]
 }
