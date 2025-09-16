@@ -1,4 +1,9 @@
 # WSave - Sistema de Análise e Verificação de EPIs em Tempo Real
+> ---
+>
+> 🏆 **PROJETO VENCEDOR do Hackathon Be Digital 2025 da Wilson Sons!** 🏆
+>
+> ---
 <p align="center">
   <img src="docs/wsavelogo.png" alt="Logo WSave" width="200">
 </p>
