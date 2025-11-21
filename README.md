@@ -112,7 +112,7 @@ Os documentos solicitados no regulamento podem ser encontrados na pasta /docs do
 * **Documentação de precificação (Análise de Custo e Viabilidade) – WSave**
 * **Vídeo de demonstração de uso - WSave**
   
-Acesse a apresentação de slides com vídeo de demonstração de uso aqui: [slide]((https://www.canva.com/design/DAGvfUG4I-M/IsODuc5LYrI80ZfUEPzLtA/view?utm_content=DAGvfUG4I-M&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hd9f0c8d46c))
+Acesse a apresentação de slides com vídeo de demonstração de uso aqui: [slide](https://www.canva.com/design/DAGvfUG4I-M/IsODuc5LYrI80ZfUEPzLtA/view?utm_content=DAGvfUG4I-M&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hd9f0c8d46c)
 
 ---
 
